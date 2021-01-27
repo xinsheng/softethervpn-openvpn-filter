@@ -18,8 +18,8 @@ def testIP(ip):
         t2 = 9999
     return t2
 
-def saveDeadList(deads):
-    f=open('_dead.list','w')
+def saveDeadList(fileName,deads):
+    f=open(fileName,'w')
     f.writelines(deads)
     f.close()
 
@@ -37,6 +37,7 @@ def loadDeadList():
     return lines
 
 DEADS = loadDeadList()
+LIVES = []
 
 with open('import.csv', mode='r', encoding='UTF-8') as csv_file:
     csv_reader = csv.DictReader(csv_file)
@@ -52,6 +53,7 @@ with open('import.csv', mode='r', encoding='UTF-8') as csv_file:
             t2 = testIP(ip)
             if t2 < 3 :
                 try:
+                    LIVES.append(ip+'\n')
                     ovpn = row[None][13]
                     country = row[None][5].lower()
                     tmp = base64.b64decode(ovpn)
@@ -66,5 +68,6 @@ with open('import.csv', mode='r', encoding='UTF-8') as csv_file:
             #exit()
         line_count += 1
 
-saveDeadList(DEADS)
+saveDeadList('_dead.list',DEADS)
+saveDeadList('_live.list',LIVES)
 print('Parsing Done')
